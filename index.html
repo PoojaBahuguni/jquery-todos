@@ -1,25 +1,26 @@
 <!doctype HTML>
 <html>
 <head>
-  <title>"TODO LIST"</title>
   <link rel="stylesheet" href="styles.css"/>
+  <title >"TODO LIST"</title>
+
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
   <script src="scripts.js"></script>
 
 </head>
-<body>
+<body >
   <div id="app-container"  class="center">
-    <h1>ToDo APP<h1>
+    <h1 class="textstyling">ToDo APP<h1>
       <form id="create-form">
-        <input name="task" id="create-input"/>
-        <button class="button">CREATE</button>
+        <input name="task" id="create-input" />
+        <button class="button-create">CREATE</button>
       </form>
-      <table>
+      <table style="padding: 20px 0px 0px 0px;">
        <thead>
         <tr>
-          <th style="font-size:22px;">TASK</th>
-          <th style="font-size:22px;">ACTIONS</th>
+          <th style="font-size:20px;text-align:center;"><span>TASK      </span></th>
+          <th style="font-size:20px;text-align:center;">ACTIONS</th>
         </tr>
           <tbody id="todo-list" />
        </thead>

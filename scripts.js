@@ -20,12 +20,12 @@ var app={
     todoListEl.html(' ');
     todos.forEach(function(todo){
       var taskClasses = (todo.iscomp ? 'is-completed':'todo-task');
-      todoListEl.append('\<tr>\<td class="'+ taskClasses +'">' + todo.task +
+      todoListEl.append('\<tr>\<td class="'+ taskClasses +'" style="font-size:22px;padding:0px 27px 0px 0px;" id="tasks">' + todo.task +
       '</td>\<td>\
-      <button class="edit-button button" id="edit">Edit</button>\
-      <button class="delete-button button" id="delete">Delete</button>\
-      <button class="save-button" id="save">Save</button>\
-      <button class="cancel-button" id="cancel">Cancel</button>\
+      <button class="edit-button button-edit btstyling">Edit</button>\
+      <button class="delete-button button-delete btstyling">Delete</button>\
+      <button class="save-button btstyling";>Save</button>\
+      <button class="cancel-button btstyling">Cancel</button>\
       </td>\</tr>' );
     });
   },
@@ -44,10 +44,31 @@ addTask:function(event){
   event.preventDefault();
   var createInput = $('#create-input');
   var createInputValue = createInput.val();
+  var flag=0;
+  todos.forEach(function(todo){
+    if(createInputValue!=todo.task)
+      {
+       flag=0;
+      }
+
+    else {
+      flag=1;
+      return false;
+    }
+  });
+  if(createInputValue!='' && flag===0){
   todos.push({
     task: createInputValue,
     iscomp:false
   });
+
+  }
+  else {
+    {
+      alert("task is empty")
+    }
+}
+
   createInput.val('');
   app.showTodos();
 },
@@ -60,7 +81,7 @@ enterEditMode:function(){
   actionCell.find('.delete-button').hide();
   taskCell.removeClass('todo-task');
   app.currentTask = taskCell.text();
-  taskCell.html('<input type="text" class="edit-input" value="'+app.currentTask+'"/>');
+  taskCell.html('<input type="text" class="edit-input" size="15" value="'+app.currentTask+'"/>');
 
 },
 exitEditMode:function(){
@@ -102,7 +123,7 @@ deleteTask:function(){
 };
 app.showTodos();
 $('#create-form').on('submit',app.addTask);
-$('table').on('click','.todo-task',app.toggleTodo);
+$('table').on('click','#tasks',app.toggleTodo);
 $('table').on('click', '.edit-button' ,app.enterEditMode);
 $('table').on('click', '.cancel-button' ,app.exitEditMode);
 $('table').on('click', '.save-button' ,app.save);
