@@ -1,0 +1,111 @@
+$(function(){
+
+var todos=[
+  {
+    task:'reading',
+    iscomp: false
+  },
+  {
+    task:'eating',
+    iscomp: true
+  },
+  {
+    task:'sleeping',
+    iscomp: false
+  },
+];
+var app={
+  showTodos:function(){
+    var todoListEl = $('#todo-list');
+    todoListEl.html(' ');
+    todos.forEach(function(todo){
+      var taskClasses = (todo.iscomp ? 'is-completed':'todo-task');
+      todoListEl.append('\<tr>\<td class="'+ taskClasses +'">' + todo.task +
+      '</td>\<td>\
+      <button class="edit-button button" id="edit">Edit</button>\
+      <button class="delete-button button" id="delete">Delete</button>\
+      <button class="save-button" id="save">Save</button>\
+      <button class="cancel-button" id="cancel">Cancel</button>\
+      </td>\</tr>' );
+    });
+  },
+
+toggleTodo:function(){
+  todos.forEach(function(todo){
+    if(todo.task === $(this).text())
+    {
+       todo.iscomp = !todo.iscomp;
+    }
+
+  }.bind(this));
+  app.showTodos();
+},
+addTask:function(event){
+  event.preventDefault();
+  var createInput = $('#create-input');
+  var createInputValue = createInput.val();
+  todos.push({
+    task: createInputValue,
+    iscomp:false
+  });
+  createInput.val('');
+  app.showTodos();
+},
+enterEditMode:function(){
+  var actionCell = $(this).closest('td');
+  var taskCell = actionCell.prev();
+  actionCell.find('.save-button').show();
+  actionCell.find('.cancel-button').show();
+  actionCell.find('.edit-button').hide();
+  actionCell.find('.delete-button').hide();
+  taskCell.removeClass('todo-task');
+  app.currentTask = taskCell.text();
+  taskCell.html('<input type="text" class="edit-input" value="'+app.currentTask+'"/>');
+
+},
+exitEditMode:function(){
+  var actionCell = $(this).closest('td');
+  var taskCell = actionCell.prev();
+  actionCell.find('.save-button').hide();
+  actionCell.find('.cancel-button').hide();
+  actionCell.find('.edit-button').show();
+  actionCell.find('.delete-button').show();
+  taskCell.addClass('todo-task');
+  taskCell.html(app.currentTask);
+},
+save:function(){
+  console.log(this);
+  var newTask=$('.edit-input').val();
+  todos.forEach(function(todo){
+    if(todo.task === app.currentTask)
+    {
+       todo.task = newTask;
+    }
+
+  });
+  app.currentTask=newTask;
+  app.exitEditMode.call(this);
+},
+deleteTask:function(){
+  var todoDelete = $(this).parent('td').prev().text();
+  var found = false;
+  todos.forEach(function(todo,index){
+    if(!found && todoDelete===todo.task){
+    todos.splice(index,1);
+    found = true;
+  }
+  });
+  app.showTodos();
+}
+
+
+};
+app.showTodos();
+$('#create-form').on('submit',app.addTask);
+$('table').on('click','.todo-task',app.toggleTodo);
+$('table').on('click', '.edit-button' ,app.enterEditMode);
+$('table').on('click', '.cancel-button' ,app.exitEditMode);
+$('table').on('click', '.save-button' ,app.save);
+$('table').on('click', '.delete-button' ,app.deleteTask);
+
+});
