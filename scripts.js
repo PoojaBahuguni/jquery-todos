@@ -44,31 +44,31 @@ addTask:function(event){
   event.preventDefault();
   var createInput = $('#create-input');
   var createInputValue = createInput.val();
-  var flag=0;
-  todos.forEach(function(todo){
-    if(createInputValue!=todo.task)
-      {
-       flag=0;
-      }
-
-    else {
-      flag=1;
-      return false;
-    }
-  });
-  if(createInputValue!='' && flag===0){
-  todos.push({
-    task: createInputValue,
-    iscomp:false
-  });
-
+  if(createInputValue===''){
+    alert("task is empty");
+    return;
   }
-  else {
-    {
-      alert("task is empty")
-    }
-}
 
+  var status = true;
+  todos.forEach(function(todo){
+    if(createInputValue===todo.task) {
+        alert("Task already exists");
+        status = false;
+    }
+  });
+  if(status){
+    todos.push({
+      task: createInputValue,
+      iscomp:false
+    });
+    $.ajax({
+           data: todos,
+           type: "post",
+           url: "process.php",
+           success: function(data){
+                alert("Data Save: " + data);
+           }
+  }
   createInput.val('');
   app.showTodos();
 },
@@ -128,5 +128,14 @@ $('table').on('click', '.edit-button' ,app.enterEditMode);
 $('table').on('click', '.cancel-button' ,app.exitEditMode);
 $('table').on('click', '.save-button' ,app.save);
 $('table').on('click', '.delete-button' ,app.deleteTask);
-
+$(document).on('click','#save',function(e) {
+  var data = $("#form-search").serialize();
+  $.ajax({
+         data: data,
+         type: "post",
+         url: "insertmail.php",
+         success: function(data){
+              alert("Data Save: " + data);
+         }
+});
 });
