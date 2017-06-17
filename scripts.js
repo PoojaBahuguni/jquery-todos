@@ -61,13 +61,6 @@ addTask:function(event){
       task: createInputValue,
       iscomp:false
     });
-    $.ajax({
-           data: todos,
-           type: "post",
-           url: "process.php",
-           success: function(data){
-                alert("Data Save: " + data);
-           }
   }
   createInput.val('');
   app.showTodos();
