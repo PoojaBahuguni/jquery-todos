@@ -122,6 +122,13 @@ deleteTask:function(){
 
 };
 app.showTodos();
+$.ajax({
+       data: todos,
+       type: "post",
+       url: "process.php",
+       success: function(todo){
+            alert("Data Save: " + data);
+       }
 $('#create-form').on('submit',app.addTask);
 $('table').on('click','#tasks',app.toggleTodo);
 $('table').on('click', '.edit-button' ,app.enterEditMode);
